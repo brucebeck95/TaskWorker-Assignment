@@ -6,6 +6,11 @@ from sqlalchemy import update, delete, asc, desc, null
 
 
 class DBContext:
+    """
+    Creating it as a context manager allows me to 
+    commit all transactions in 1 session and then automatically 
+    close when I am finished.
+    """
     def __init__(self):
 
         self._engine = engine
@@ -22,12 +27,6 @@ class DBContext:
         if self.session:
             self.session.commit()
             self.session.close()
-
-    """
-    Creating it as a context manager allows me to 
-    commit all transactions in 1 session and then automatically 
-    close when I am finished.
-    """
 
     def __enter__(self):
         self.session = self.session()  # type: ignore

@@ -51,6 +51,10 @@ def retrieve_and_decode_token(token: str) -> dict:
 
 
 def has_admin_rights(token: Annotated[str, Depends(OAUTH2_SCHEMA)]) -> bool:
+    """
+    Helper method to help determine if a user is an admin or not.
+    FastAPI automatically pulls the token and injects it into this functions
+    """
     if retrieve_and_decode_token(token).get("is_admin"):
         return True
     return False

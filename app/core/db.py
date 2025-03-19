@@ -50,6 +50,10 @@ class TaskTable(Base):
     user = relationship("UserTable", back_populates="tasks")
 
     def to_dict(self):
+        """
+        Created a to_dict method to convert the task object to a dictionary
+        when pulling a user.
+        """
         return {
             "id": self.id,
             "title": self.title,

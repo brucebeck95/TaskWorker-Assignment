@@ -21,6 +21,7 @@ def request_access_token(
     """
     This only exists because I don't have a OAuth client that I can use
     to verify identities.
+    FastAPI looks for /token to handle the Auth on the Swagger.
     """
 
     logging.info(form_data)
