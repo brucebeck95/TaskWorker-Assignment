@@ -1,0 +1,38 @@
+
+services:
+  db:
+    image: postgres:13
+    environment:
+      POSTGRES_USER: root
+      POSTGRES_PASSWORD: dummypassword
+      POSTGRES_DB: app
+    ports:
+      - "5432:5432"
+    volumes:
+      - db_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready --username=root --dbname=app"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+  
+  migrate:
+    build: ./migrate
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      DATABASE_URL: postgresql://root:dummypassword@db:5432/app
+
+  app-web-server:
+    build: .
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      DATABASE_URL: postgresql://app_user:dummy_password@db:5432/app
+    ports:
+      - "8000:8000"
+
+volumes:
+  db_data:
