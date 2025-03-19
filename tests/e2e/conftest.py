@@ -77,7 +77,10 @@ def user_headers():
 
 @pytest.fixture
 def create_mock_task():
-    task = Task().create_task(
-        title="Test task", description="Task to create something", due_date="2012-12-12"
-    )
+    with Task() as task_db:
+        task = task_db.create_task(
+            title="Test task",
+            description="Task to create something",
+            due_date="2012-12-12",
+        )
     return task.id
